@@ -22,23 +22,12 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class MainViewController implements Initializable {
-    @FXML
-    private ChoiceBox<String> choseDecryptionMethod;
 
     @FXML
     private ChoiceBox<String> choseEncryptionMethod;
 
     @FXML
-    private TextArea decryptedText;
-
-    @FXML
-    private TextArea encryptedChoseFile;
-
-    @FXML
     private TextArea encryptedText;
-
-    @FXML
-    private TextField keyLengthDecryption;
 
     @FXML
     private TextField keyLengthEncryption;
@@ -47,10 +36,7 @@ public class MainViewController implements Initializable {
     private TextArea plainText;
 
     @FXML
-    private Button saveDecryptedFile;
-
-    @FXML
-    private Button saveEncryptedFile;
+    private ChoiceBox<String> choseAction;
 
     @FXML
     private File theFile;
@@ -67,7 +53,7 @@ public class MainViewController implements Initializable {
 
     public void setValueToChoiceBoxes(){
         this.choseEncryptionMethod.getItems().addAll("Cesar","Vigenère");
-        this.choseDecryptionMethod.getItems().addAll("Cesar","Vigenère");
+        this.choseAction.getItems().addAll("Encrypt","Decrypt");
 
     }
 
@@ -172,7 +158,7 @@ public class MainViewController implements Initializable {
             }
         }else {
             if(value == "Cesar"){
-                String encryptFileCeasar = CaesarCipher.encrypt(theFile.getAbsolutePath(),Integer.parseInt(keyLengthEncryption.getText()));
+                String encryptFileCeasar = CaesarCipher.encrypt(this.plainText.getText(),Integer.parseInt(keyLengthEncryption.getText()));
                 encryptedText.setText(encryptFileCeasar);
             } else {
                 String encryptFileViginiere = VigenèreCipher.encrypt_file(keyLengthEncryption.getText(),plainText.getText());
@@ -181,37 +167,29 @@ public class MainViewController implements Initializable {
         }
     }
 
-    public void setPromptToKey(){
-        this.choseEncryptionMethod.setOnAction(actionEvent -> {
-            this.keyLengthEncryption.editableProperty().set(true);
+    public void setPromptToKey(ChoiceBox<String> choseMethod, TextField keyLength){
+        choseMethod.setOnAction(actionEvent -> {
+            keyLength.editableProperty().set(true);
 
-            if(choseEncryptionMethod.getValue() == "Cesar"){
-                this.keyLengthEncryption.setPromptText("0-64");
-                validateKeyLengthEncryption();
+            if(choseMethod.getValue() == "Cesar"){
+                keyLength.setPromptText("0-64");
+                validateKeyLengthEncryption(this.choseEncryptionMethod,this.keyLengthEncryption);
 
             }else {
-                this.keyLengthEncryption.setPromptText("Write Letters only");
-                validateKeyLengthEncryption();
+                keyLength.setPromptText("Write Letters only");
+                validateKeyLengthEncryption(this.choseEncryptionMethod,this.keyLengthEncryption);
             }
         });
     }
-    @FXML
-    public void saveEncryptedFile(){
-        FileChooser fileChooser = new FileChooser();
-        System.out.println(theFile.getAbsolutePath());
-        theFile = fileChooser.showSaveDialog(new Stage());
 
-    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setValueToChoiceBoxes();
-        setPromptToKey();
-
+        setPromptToKey(this.choseEncryptionMethod,this.keyLengthEncryption);
     }
-
-    public void validateKeyLengthEncryption(){
-                if (choseEncryptionMethod.getValue() == "Cesar"){
-                    this.keyLengthEncryption.setOnKeyPressed(e1-> {
+    public void validateKeyLengthEncryption(ChoiceBox<String> choseMethod,TextField keyLength){
+                if (choseMethod.getValue() == "Cesar"){
+                    keyLength.setOnKeyPressed(e1-> {
                         if(!e1.getCode().isDigitKey() && e1.getCode() != KeyCode.BACK_SPACE){
                             e1.consume();
                             Alert alert = new Alert(Alert.AlertType.ERROR, "Key should be number!");
@@ -219,7 +197,7 @@ public class MainViewController implements Initializable {
                         }
                     });
             }else {
-                    this.keyLengthEncryption.setOnKeyPressed(e1 -> {
+                    keyLength.setOnKeyPressed(e1 -> {
                         if (!e1.getCode().isLetterKey() && e1.getCode() != KeyCode.BACK_SPACE) {
                             e1.consume();
                             Alert alert = new Alert(Alert.AlertType.ERROR, "Key should be a letter(also not spaces)!");
