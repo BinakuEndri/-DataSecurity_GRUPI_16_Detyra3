@@ -8,6 +8,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ChoseFileController {
 
@@ -31,7 +32,9 @@ public class ChoseFileController {
             textFileChosen = false;
             mainViewController.setTheFile(file);
             mainViewController.setTxtFileChosen(textFileChosen);
-            closeStage();
+           // closeStage();
+            mainViewController.setTextToPlainText();
+
         }
         else {
             textFileChosen =false;
@@ -48,9 +51,8 @@ public class ChoseFileController {
             textFileChosen = true;
             mainViewController.setTheFile(file);
             mainViewController.setTxtFileChosen(textFileChosen);
-            closeStage();
+         //   closeStage();
             mainViewController.setTextToPlainText();
-            mainViewController.setTextToEnryptedText();
         }
         else {
             textFileChosen =false;

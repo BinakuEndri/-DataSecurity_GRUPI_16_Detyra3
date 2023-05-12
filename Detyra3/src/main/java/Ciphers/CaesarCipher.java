@@ -7,28 +7,28 @@ import java.io.IOException;
 public class CaesarCipher {
     public static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-    public static void main(String[] args) {
-        String filePath = "C:/Users/Admin/Desktop/MyCV_SHQIP.pdf";
-        int shift = 3;
+ //   public static void main(String[] args) {
+//        String filePath = "C:/Users/Admin/Desktop/MyCV_SHQIP.pdf";
+//        int shift = 3;
 
-        try {
-            String encodedFilePath = Base64UtilClass.encode(filePath);
-            String encryptedFilePath = encrypt(encodedFilePath, shift, "C:\\Users\\Admin\\Desktop\\prova.txt");
-            String decryptedFilePath = decrypt(encryptedFilePath, shift, "C:\\Users\\Admin\\Desktop\\prov.txt");
-            Base64UtilClass.decode(decryptedFilePath,"C:\\Users\\Admin\\Desktop\\result.pdf" );
-            System.out.println(encodedFilePath.equals(decryptedFilePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//        try {
+ //           String encodedFilePath = Base64UtilClass.encode(filePath);
+//            String encryptedFilePath = encrypt(encodedFilePath, shift, "C:\\Users\\Admin\\Desktop\\prova.txt");
+//            String decryptedFilePath = decrypt(encryptedFilePath, shift, "C:\\Users\\Admin\\Desktop\\prov.txt");
+//            Base64UtilClass.decode(decryptedFilePath,"C:\\Users\\Admin\\Desktop\\result.pdf" );
+//            System.out.println(encodedFilePath.equals(decryptedFilePath));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
 
-    public static String encrypt(String filePath, int shift, String encryptedFilePath) throws IOException {
+    public static String encrypt(String filePath, int shift) throws IOException {
         String fileContents = filePath;
         String encryptedFileContents = caesarCipher_e(fileContents, shift);
-        writeFile(encryptedFilePath, encryptedFileContents);
-        System.out.println("File encrypted! Encrypted file saved at: " + encryptedFilePath);
+      //  writeFile(encryptedFilePath, encryptedFileContents);
+       // System.out.println("File encrypted! Encrypted file saved at: " + encryptedFilePath);
         return encryptedFileContents;
     }
 

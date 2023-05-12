@@ -10,22 +10,22 @@ import java.util.Random;
 import java.io.FileWriter;
 
 public class VigenèreCipher {
-    public static void main(String arg[]){
-        Scanner sc = new Scanner(System.in);
+//    public static void main(String arg[]){
+//        Scanner sc = new Scanner(System.in);
 
-
-        System.out.print("Enter the Encryption key : ");
-        String key = sc.nextLine();
+//
+   //     System.out.print("Enter the Encryption key : ");
+ //       String key = sc.nextLine();
         // decrypt_file(key);
-        try{
-            String encoded = Base64UtilClass.encode("C:/Users/Admin/Desktop/MyCV_SHQIP.pdf");
-            String en = encrypt_file(key, encoded,"C:\\Users\\Admin\\Desktop\\t1.txt" );
-            String de = decrypt_file(key, en);
-            System.out.println(de.equals(encoded));
-            Base64UtilClass.decode(de, "C:\\Users\\Admin\\Desktop\\vig.pdf");
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+ //       try{
+   //         String encoded = Base64UtilClass.encode("C:/Users/Admin/Desktop/MyCV_SHQIP.pdf");
+  //          String en = encrypt_file(key, encoded,"C:\\Users\\Admin\\Desktop\\t1.txt" );
+  //          String de = decrypt_file(key, en);
+  //          System.out.println(de.equals(encoded));
+  //          Base64UtilClass.decode(de, "C:\\Users\\Admin\\Desktop\\vig.pdf");
+ //       }catch (IOException e){
+ //           e.printStackTrace();
+ //       }
 
 
 
@@ -33,7 +33,7 @@ public class VigenèreCipher {
         //String inString = sc.nextLine();
         //String finalString = encrypt(inString, key);
         //System.out.print("\nThe encrypted String is : " + finalString);
-    }
+
 
     // method that removes all the numbers, punctuations
     static String remove_ichars(String original_msg){
@@ -41,7 +41,7 @@ public class VigenèreCipher {
         return original_msg;
     }
 
-    static String encrypt(String original_msg, String key){
+    public static String encrypt(String original_msg, String key){
         // allchars is our keyspace
         String allChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         int all_chars_length = allChars.length();
@@ -84,7 +84,7 @@ public class VigenèreCipher {
     }
 
 
-    static String decrypt(String encrypted_msg, String key) {
+   public static String decrypt(String encrypted_msg, String key) {
 
         // allchars is our keyspace
         String allChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -122,7 +122,7 @@ public class VigenèreCipher {
     }
 
 
-    static String encrypt_file(String key, String encoded, String pathToSaveEncrypted){
+    public static String encrypt_file(String key, String encoded){
         String fullFile = "";
         try {
 
@@ -134,20 +134,20 @@ public class VigenèreCipher {
             e.printStackTrace();
         }
 
-        try {
+      //  try {
 
-            File newTextFile = new File(pathToSaveEncrypted);
-            FileWriter f1 = new FileWriter(newTextFile);
-            f1.write(fullFile);
-            f1.close();
-            System.out.println("Encrypted file stored on Desktop");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        //    File newTextFile = new File(pathToSaveEncrypted);
+         //   FileWriter f1 = new FileWriter(newTextFile);
+        //    f1.write(fullFile);
+        //    f1.close();
+       //     System.out.println("Encrypted file stored on Desktop");
+      //  } catch (IOException ex) {
+      //      ex.printStackTrace();
+      //  }
         return fullFile;
     }
 
-    static String decrypt_file(String key,String decoded){
+    public static String decrypt_file(String key,String decoded){
 
         String fullFile = "";
 

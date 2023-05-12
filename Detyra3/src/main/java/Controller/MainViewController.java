@@ -1,7 +1,9 @@
 package Controller;
 
+import Ciphers.Base64UtilClass;
 import Ciphers.CaesarCipher;
 import Ciphers.VigenèreCipher;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -108,10 +110,54 @@ public class MainViewController implements Initializable {
             }
 
         }else {
-           // Write the base64 encoded text to Text Area          // base64
+            if(theFile != null) {
+                String path = theFile.getAbsolutePath();
+                try {
+                    String encoded = Base64UtilClass.encode(path);
+                    plainText.setText(encoded);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
-    public void setTextToEnryptedText(){
+    @FXML
+    void encryptText(ActionEvent event) {
+        if(!this.plainText.getText().isEmpty() && !this.keyLengthEncryption.getText().isEmpty() && this.choseEncryptionMethod.getValue() != null) {
+            try {
+                setTextToEnryptedText();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING,"Fill all the fields",ButtonType.CLOSE);
+            alert.show();
+        }
+    }
+    @FXML
+    void decryptText(ActionEvent actionEvent){
+
+    }
+
+    @FXML
+    void saveEncryptedFile(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("*","."+getFileExtension(theFile));
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        File filedDest = fileChooser.showSaveDialog(new Stage());
+        try {
+        if(txtFileChosen){
+            CaesarCipher.writeFile(filedDest.getAbsolutePath(),this.encryptedText.getText());
+        }
+        else {
+            Base64UtilClass.decode(this.encryptedText.getText(),filedDest.getAbsolutePath());
+        }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void setTextToEnryptedText() throws IOException {
         String value = choseEncryptionMethod.getValue();
         String text = plainText.getText();
         if(txtFileChosen){
@@ -121,13 +167,16 @@ public class MainViewController implements Initializable {
                 this.encryptedText.wrapTextProperty().set(true);
                 this.encryptedText.setText(encryptedText1);
             } else {
-                //Wirte to encryptedArea  Viginere
+                String encrypted = VigenèreCipher.encrypt(text,keyLengthEncryption.getText());
+                encryptedText.setText(encrypted);
             }
         }else {
             if(value == "Cesar"){
-                //Write to encryptedArea the  Cesar with Base64
+                String encryptFileCeasar = CaesarCipher.encrypt(theFile.getAbsolutePath(),Integer.parseInt(keyLengthEncryption.getText()));
+                encryptedText.setText(encryptFileCeasar);
             } else {
-                //Wirte to encryptedArea the encryptet Viginere with Base64
+                String encryptFileViginiere = VigenèreCipher.encrypt_file(keyLengthEncryption.getText(),plainText.getText());
+                encryptedText.setText(encryptFileViginiere);
             }
         }
     }
@@ -178,5 +227,15 @@ public class MainViewController implements Initializable {
                         }
                     });
                 }
+    }
+
+    String getFileExtension(File file) {
+        if (file == null) {
+            return "";
+        }
+        String name = file.getName();
+        int i = name.lastIndexOf('.');
+        String ext = i > 0 ? name.substring(i + 1) : "";
+        return ext;
     }
 }
