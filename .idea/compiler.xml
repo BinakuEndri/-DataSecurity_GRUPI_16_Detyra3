@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Detyra3" target="19" />
+      <module name="Detyra3" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
