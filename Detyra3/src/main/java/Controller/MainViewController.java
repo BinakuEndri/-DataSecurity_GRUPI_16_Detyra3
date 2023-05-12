@@ -1,21 +1,23 @@
 package Controller;
 
+import Ciphers.CaesarCipher;
+import Ciphers.VigenèreCipher;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class MainViewController implements Initializable {
     @FXML
@@ -48,6 +50,7 @@ public class MainViewController implements Initializable {
     @FXML
     private Button saveEncryptedFile;
 
+    @FXML
     private File theFile;
 
     private boolean txtFileChosen;
@@ -78,6 +81,7 @@ public class MainViewController implements Initializable {
             Scene scene = new Scene(root,500,300);
             stage.setScene(scene);
             stage.show();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -85,7 +89,24 @@ public class MainViewController implements Initializable {
 
     public void setTextToPlainText(){
         if(txtFileChosen){
-           // Write the text of textFile to textArea                //me lexu txtFile
+            FileInputStream fin;
+            Scanner sc = new Scanner(System.in);
+
+            String fullFile = "";
+            try {
+                fin = new FileInputStream(this.theFile);
+                Scanner fp = new Scanner(fin);
+                while (fp.hasNextLine()) {
+                    String line = fp.nextLine();
+                    fullFile += line;
+                }
+                this.plainText.wrapTextProperty().set(true);
+                this.plainText.setText(fullFile);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }else {
            // Write the base64 encoded text to Text Area          // base64
         }
@@ -95,8 +116,10 @@ public class MainViewController implements Initializable {
         String text = plainText.getText();
         if(txtFileChosen){
             if(value == "Cesar"){
-
-                //Write to encryptedArea the encrypted Cesar
+                String encryptedText1 = CaesarCipher.caesarCipher(text,
+                        Integer.parseInt(this.keyLengthEncryption.getText()));
+                this.encryptedText.wrapTextProperty().set(true);
+                this.encryptedText.setText(encryptedText1);
             } else {
                 //Wirte to encryptedArea  Viginere
             }
@@ -112,11 +135,14 @@ public class MainViewController implements Initializable {
     public void setPromptToKey(){
         this.choseEncryptionMethod.setOnAction(actionEvent -> {
             this.keyLengthEncryption.editableProperty().set(true);
+
             if(choseEncryptionMethod.getValue() == "Cesar"){
                 this.keyLengthEncryption.setPromptText("0-64");
+                validateKeyLengthEncryption();
 
             }else {
                 this.keyLengthEncryption.setPromptText("Write Letters only");
+                validateKeyLengthEncryption();
             }
         });
     }
@@ -125,10 +151,32 @@ public class MainViewController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         System.out.println(theFile.getAbsolutePath());
         theFile = fileChooser.showSaveDialog(new Stage());
+
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setValueToChoiceBoxes();
         setPromptToKey();
+
+    }
+
+    public void validateKeyLengthEncryption(){
+                if (choseEncryptionMethod.getValue() == "Cesar"){
+                    this.keyLengthEncryption.setOnKeyPressed(e1-> {
+                        if(!e1.getCode().isDigitKey() && e1.getCode() != KeyCode.BACK_SPACE){
+                            e1.consume();
+                            Alert alert = new Alert(Alert.AlertType.ERROR, "Key should be number!");
+                            alert.show();
+                        }
+                    });
+            }else {
+                    this.keyLengthEncryption.setOnKeyPressed(e1 -> {
+                        if (!e1.getCode().isLetterKey() && e1.getCode() != KeyCode.BACK_SPACE) {
+                            e1.consume();
+                            Alert alert = new Alert(Alert.AlertType.ERROR, "Key should be a letter(also not spaces)!");
+                            alert.show();
+                        }
+                    });
+                }
     }
 }

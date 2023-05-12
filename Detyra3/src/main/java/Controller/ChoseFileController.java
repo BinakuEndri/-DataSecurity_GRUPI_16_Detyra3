@@ -49,6 +49,8 @@ public class ChoseFileController {
             mainViewController.setTheFile(file);
             mainViewController.setTxtFileChosen(textFileChosen);
             closeStage();
+            mainViewController.setTextToPlainText();
+            mainViewController.setTextToEnryptedText();
         }
         else {
             textFileChosen =false;
