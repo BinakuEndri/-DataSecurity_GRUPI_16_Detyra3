@@ -1,19 +1,17 @@
 package Controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
 
-public class ChoseFileController {
+public class ChooseFileController {
 
     @FXML
-    private Label choseTextFile;
+    private Label chooseTextFile;
 
     private File file;
 
@@ -32,9 +30,8 @@ public class ChoseFileController {
             textFileChosen = false;
             mainViewController.setTheFile(file);
             mainViewController.setTxtFileChosen(textFileChosen);
-           // closeStage();
+            closeStage();
             mainViewController.setTextToPlainText();
-
         }
         else {
             textFileChosen =false;
@@ -51,7 +48,7 @@ public class ChoseFileController {
             textFileChosen = true;
             mainViewController.setTheFile(file);
             mainViewController.setTxtFileChosen(textFileChosen);
-         //   closeStage();
+            closeStage();
             mainViewController.setTextToPlainText();
         }
         else {
@@ -61,7 +58,7 @@ public class ChoseFileController {
     }
 
     private void closeStage() {
-        Stage stage = (Stage) choseTextFile.getScene().getWindow();
+        Stage stage = (Stage) chooseTextFile.getScene().getWindow();
         stage.close();
     }
 }

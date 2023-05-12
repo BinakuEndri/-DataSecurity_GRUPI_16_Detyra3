@@ -10,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -24,21 +26,29 @@ import java.util.Scanner;
 public class MainViewController implements Initializable {
 
     @FXML
-    private ChoiceBox<String> choseEncryptionMethod;
+    private ChoiceBox<String> chooseCipher;
 
     @FXML
-    private TextArea encryptedText;
+    private TextArea resultText;
 
     @FXML
-    private TextField keyLengthEncryption;
+    private TextField key;
 
     @FXML
     private TextArea plainText;
 
     @FXML
-    private ChoiceBox<String> choseAction;
+    private ChoiceBox<String> chooseAction;
 
     @FXML
+    private ImageView image;
+    @FXML
+    private Button browseFilesBtn;
+    @FXML
+    private Button btnAction;
+    @FXML
+    private Button saveFiles;
+
     private File theFile;
 
     private boolean txtFileChosen;
@@ -52,18 +62,22 @@ public class MainViewController implements Initializable {
     }
 
     public void setValueToChoiceBoxes(){
-        this.choseEncryptionMethod.getItems().addAll("Cesar","Vigenère");
-        this.choseAction.getItems().addAll("Encrypt","Decrypt");
+        this.chooseCipher.getItems().addAll("Caesar","Vigenère");
+        this.chooseAction.getItems().addAll("Encrypt","Decrypt");
 
     }
 
+
+
     @FXML
     public void browseFiles(){
+        plainText.clear();
+        resultText.clear();
         FXMLLoader fxmlLoader= new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("choseFile.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("chooseFile.fxml"));
         try {
             Parent root = fxmlLoader.load();
-            ChoseFileController choseFileController = fxmlLoader.getController();
+            ChooseFileController choseFileController = fxmlLoader.getController();
             choseFileController.setMainViewController(this);
             Stage stage = new Stage();
             Scene scene = new Scene(root,500,300);
@@ -73,13 +87,12 @@ public class MainViewController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        this.btnAction.setDisable(false);
     }
 
     public void setTextToPlainText(){
         if(txtFileChosen){
             FileInputStream fin;
-            Scanner sc = new Scanner(System.in);
-
             String fullFile = "";
             try {
                 fin = new FileInputStream(this.theFile);
@@ -90,7 +103,7 @@ public class MainViewController implements Initializable {
                 }
                 this.plainText.wrapTextProperty().set(true);
                 this.plainText.setText(fullFile);
-
+                fp.close();
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -108,76 +121,103 @@ public class MainViewController implements Initializable {
         }
     }
     @FXML
-    void encryptText(ActionEvent event) {
-        if(!this.plainText.getText().isEmpty() && !this.keyLengthEncryption.getText().isEmpty() && this.choseEncryptionMethod.getValue() != null) {
+    void cipherAction(ActionEvent event) {
+
+        if(!this.plainText.getText().isEmpty() && !this.key.getText().isEmpty() && this.chooseCipher.getValue() != null) {
             try {
-                setTextToEnryptedText();
+                setTextToResultText();
+                this.saveFiles.setDisable(false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.WARNING,"Fill all the fields",ButtonType.CLOSE);
+            Alert alert = new Alert(Alert.AlertType.WARNING,"Fill all the fields!",ButtonType.CLOSE);
             alert.show();
         }
     }
-    @FXML
-    void decryptText(ActionEvent actionEvent){
 
-    }
 
     @FXML
-    void saveEncryptedFile(ActionEvent event) {
+    void saveFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("*","."+getFileExtension(theFile));
         fileChooser.getExtensionFilters().add(extensionFilter);
         File filedDest = fileChooser.showSaveDialog(new Stage());
         try {
         if(txtFileChosen){
-            CaesarCipher.writeFile(filedDest.getAbsolutePath(),this.encryptedText.getText());
+            CaesarCipher.writeFile(filedDest.getAbsolutePath(),this.resultText.getText());
         }
         else {
-            Base64UtilClass.decode(this.encryptedText.getText(),filedDest.getAbsolutePath());
+            Base64UtilClass.decode(this.resultText.getText(),filedDest.getAbsolutePath());
         }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public void setTextToEnryptedText() throws IOException {
-        String value = choseEncryptionMethod.getValue();
+
+
+// TTT
+    public void setTextToResultText() throws IOException {
+        String value = chooseCipher.getValue();
         String text = plainText.getText();
-        if(txtFileChosen){
-            if(value == "Cesar"){
-                String encryptedText1 = CaesarCipher.caesarCipher(text,
-                        Integer.parseInt(this.keyLengthEncryption.getText()));
-                this.encryptedText.wrapTextProperty().set(true);
-                this.encryptedText.setText(encryptedText1);
-            } else {
-                String encrypted = VigenèreCipher.encrypt(text,keyLengthEncryption.getText());
-                encryptedText.setText(encrypted);
+        if (chooseAction.getValue().equals("Encrypt")){
+            if(txtFileChosen){
+                if(value == "Caesar"){
+                    String encryptedText1 = CaesarCipher.caesarCipher(text,
+                            Integer.parseInt(this.key.getText()));
+                    this.resultText.wrapTextProperty().set(true);
+                    this.resultText.setText(encryptedText1);
+                } else {
+                    String encrypted = VigenèreCipher.encrypt(text, key.getText());
+                    resultText.setText(encrypted);
+                }
+            }else {
+                if(value == "Caesar"){
+                    String encryptFileCaesar = CaesarCipher.encrypt(this.plainText.getText(),Integer.parseInt(key.getText()));
+                    resultText.setText(encryptFileCaesar);
+                } else {
+                    String encryptFileVigenere = VigenèreCipher.encrypt_file(key.getText(),plainText.getText());
+                    resultText.setText(encryptFileVigenere);
+                }
             }
-        }else {
-            if(value == "Cesar"){
-                String encryptFileCeasar = CaesarCipher.encrypt(this.plainText.getText(),Integer.parseInt(keyLengthEncryption.getText()));
-                encryptedText.setText(encryptFileCeasar);
-            } else {
-                String encryptFileViginiere = VigenèreCipher.encrypt_file(keyLengthEncryption.getText(),plainText.getText());
-                encryptedText.setText(encryptFileViginiere);
+        }else{
+            if(txtFileChosen){
+                if(value == "Caesar"){
+                    String decryptedText1 = CaesarCipher.caesarDecipher(text,
+                            Integer.parseInt(this.key.getText()));
+                    this.resultText.wrapTextProperty().set(true);
+                    this.resultText.setText(decryptedText1);
+                } else {
+                    String decrypted = VigenèreCipher.decrypt(text, key.getText());
+                    resultText.setText(decrypted);
+                }
+            }else {
+                if(value == "Cesar"){
+                    String decryptFileCaeasar = CaesarCipher.decrypt(text,Integer.parseInt(key.getText()));
+                    resultText.setText(decryptFileCaeasar);
+                } else {
+                    String decryptFileVigenere = VigenèreCipher.decrypt_file(key.getText(),plainText.getText());
+                    resultText.setText(decryptFileVigenere);
+                }
             }
         }
+
     }
 
     public void setPromptToKey(ChoiceBox<String> choseMethod, TextField keyLength){
         choseMethod.setOnAction(actionEvent -> {
             keyLength.editableProperty().set(true);
-
-            if(choseMethod.getValue() == "Cesar"){
-                keyLength.setPromptText("0-64");
-                validateKeyLengthEncryption(this.choseEncryptionMethod,this.keyLengthEncryption);
-
+            if(choseMethod.getValue() == "Caesar"){
+                keyLength.setPromptText("Write Number");
+                validateKeyLengthEncryption(this.chooseCipher,this.key);
+                keyLength.clear();
+                resultText.clear();
             }else {
                 keyLength.setPromptText("Write Letters only");
-                validateKeyLengthEncryption(this.choseEncryptionMethod,this.keyLengthEncryption);
+                validateKeyLengthEncryption(this.chooseCipher,this.key);
+                keyLength.clear();
+                resultText.clear();
             }
         });
     }
@@ -185,14 +225,32 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setValueToChoiceBoxes();
-        setPromptToKey(this.choseEncryptionMethod,this.keyLengthEncryption);
+        setPromptToKey(this.chooseCipher, this.key);
+        update();
     }
+
+    public void update(){
+        this.chooseAction.setOnAction(e ->{
+            this.chooseCipher.setDisable(false);
+            this.browseFilesBtn.setDisable(false);
+            if (this.chooseAction.getValue()!= null && this.chooseAction.getValue()== "Encrypt"){
+                this.btnAction.setText("Encrypt");
+                this.image.setImage(new
+                        Image("C:\\Users\\Admin\\IdeaProjects\\DataSecurity_GRUPI_16_Detyra3\\Detyra3\\src\\main\\resources\\Images\\lock_480px.png"));
+            }else if(this.chooseAction.getValue()!= null && this.chooseAction.getValue() =="Decrypt"){
+                this.btnAction.setText("Decrypt");
+                this.image.setImage(new
+                        Image("C:\\Users\\Admin\\IdeaProjects\\DataSecurity_GRUPI_16_Detyra3\\Detyra3\\src\\main\\resources\\Images\\KeySecurity_480px.png"));
+            }
+        });
+    }
+
     public void validateKeyLengthEncryption(ChoiceBox<String> choseMethod,TextField keyLength){
                 if (choseMethod.getValue() == "Cesar"){
                     keyLength.setOnKeyPressed(e1-> {
                         if(!e1.getCode().isDigitKey() && e1.getCode() != KeyCode.BACK_SPACE){
                             e1.consume();
-                            Alert alert = new Alert(Alert.AlertType.ERROR, "Key should be number!");
+                            Alert alert = new Alert(Alert.AlertType.ERROR, "Only digits!");
                             alert.show();
                         }
                     });
@@ -200,7 +258,7 @@ public class MainViewController implements Initializable {
                     keyLength.setOnKeyPressed(e1 -> {
                         if (!e1.getCode().isLetterKey() && e1.getCode() != KeyCode.BACK_SPACE) {
                             e1.consume();
-                            Alert alert = new Alert(Alert.AlertType.ERROR, "Key should be a letter(also not spaces)!");
+                            Alert alert = new Alert(Alert.AlertType.ERROR, "Only letters (also not spaces)!");
                             alert.show();
                         }
                     });
@@ -216,4 +274,5 @@ public class MainViewController implements Initializable {
         String ext = i > 0 ? name.substring(i + 1) : "";
         return ext;
     }
+
 }
