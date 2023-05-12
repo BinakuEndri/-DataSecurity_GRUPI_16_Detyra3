@@ -7,26 +7,27 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="900.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainViewController">
    <children>
       <ChoiceBox fx:id="choseEncryptionMethod" layoutX="62.0" layoutY="67.0" prefHeight="26.0" prefWidth="194.0" />
       <Label layoutX="62.0" layoutY="36.0" prefHeight="18.0" prefWidth="158.0" text="Chose Encryption Method" />
       <Label layoutX="390.0" layoutY="36.0" prefHeight="18.0" prefWidth="158.0" text="Type Key Length" />
-      <TextField fx:id="keyLengthEncryption" layoutX="390.0" layoutY="68.0" prefHeight="26.0" prefWidth="201.0" promptText="0-50" />
+      <TextField fx:id="keyLengthEncryption" editable="false" layoutX="390.0" layoutY="68.0" prefHeight="26.0" prefWidth="201.0" />
       <TextArea fx:id="encryptedText" layoutX="390.0" layoutY="183.0" prefHeight="199.0" prefWidth="201.0" />
       <Label layoutX="390.0" layoutY="152.0" prefHeight="18.0" prefWidth="158.0" text="Encrypted Text" />
-      <TextArea fx:id="plainTextChoseFile" editable="false" layoutX="59.0" layoutY="183.0" prefHeight="200.0" prefWidth="200.0" promptText="CHOSE FILE" />
-      <Label layoutX="62.0" layoutY="152.0" prefHeight="18.0" prefWidth="158.0" text="Chose File" />
-      <ChoiceBox fx:id="choseDecryptionMethod" layoutX="59.0" layoutY="472.0" prefHeight="26.0" prefWidth="194.0" />
-      <Label layoutX="59.0" layoutY="441.0" prefHeight="18.0" prefWidth="158.0" text="Chose Decryption Method" />
-      <Label layoutX="390.0" layoutY="443.0" prefHeight="18.0" prefWidth="158.0" text="Type Key Length" />
-      <TextField fx:id="keyLengthDecryption" layoutX="390.0" layoutY="475.0" prefHeight="26.0" prefWidth="201.0" promptText="0-50" />
+      <TextArea fx:id="plainText" editable="false" layoutX="59.0" layoutY="183.0" prefHeight="200.0" prefWidth="200.0" promptText="You Have Not Chosen A File" />
+      <Label layoutX="62.0" layoutY="152.0" prefHeight="18.0" prefWidth="158.0" text="The File You Provided" />
+      <ChoiceBox fx:id="choseDecryptionMethod" layoutX="59.0" layoutY="491.0" prefHeight="26.0" prefWidth="194.0" />
+      <Label layoutX="59.0" layoutY="460.0" prefHeight="18.0" prefWidth="158.0" text="Chose Decryption Method" />
+      <Label layoutX="391.0" layoutY="460.0" prefHeight="18.0" prefWidth="158.0" text="Type Key Length" />
+      <TextField fx:id="keyLengthDecryption" layoutX="391.0" layoutY="492.0" prefHeight="26.0" prefWidth="201.0" promptText="0-50" />
       <TextArea fx:id="decryptedText" layoutX="391.0" layoutY="558.0" prefHeight="199.0" prefWidth="201.0" />
       <Label layoutX="391.0" layoutY="527.0" prefHeight="18.0" prefWidth="158.0" text="Decrypted Text" />
-      <Button fx:id="saveEncryptedFile" layoutX="415.0" layoutY="389.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="152.0" text="Save Encrypted File" />
+      <Button fx:id="saveEncryptedFile" layoutX="415.0" layoutY="397.0" mnemonicParsing="false" onAction="#saveEncryptedFile" prefHeight="35.0" prefWidth="152.0" text="Save Encrypted File" />
       <Button fx:id="saveDecryptedFile" layoutX="415.0" layoutY="775.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="152.0" text="Save Decrypted File" />
       <TextArea fx:id="encryptedChoseFile" editable="false" layoutX="59.0" layoutY="558.0" prefHeight="200.0" prefWidth="200.0" promptText="CHOSE FILE" />
       <Label layoutX="62.0" layoutY="542.0" prefHeight="18.0" prefWidth="158.0" text="Chose File" />
+      <Button fx:id="browseFilesBtn" layoutX="83.0" layoutY="397.0" mnemonicParsing="false" onAction="#browseFiles" prefHeight="35.0" prefWidth="152.0" text="Browse File" />
+      <Button fx:id="saveEncryptedFile11" layoutX="83.0" layoutY="775.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="152.0" text="Browse File" />
    </children>
 </AnchorPane>
