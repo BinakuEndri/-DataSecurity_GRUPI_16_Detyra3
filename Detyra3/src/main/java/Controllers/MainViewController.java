@@ -1,4 +1,4 @@
-package Controller;
+package Controllers;
 
 import Ciphers.Base64UtilClass;
 import Ciphers.CaesarCipher;

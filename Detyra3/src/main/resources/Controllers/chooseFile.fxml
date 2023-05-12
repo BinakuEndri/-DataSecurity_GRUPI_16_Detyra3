@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ChoseFileController">
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ChooseFileController">
    <children>
       <HBox prefHeight="300.0" prefWidth="500.0" spacing="50.0">
          <padding>
@@ -24,7 +24,7 @@
                         <Image url="@../Images/textFile.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="choseTextFile" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#browseTextFile" prefHeight="88.0" prefWidth="192.0" text="Want to encrypt TextFile?" textAlignment="CENTER" underline="true" wrapText="true">
+                  <Label fx:id="choseTextFile" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#browseTextFile" prefHeight="88.0" prefWidth="192.0" text=" TextFile" textAlignment="CENTER" underline="true" wrapText="true">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -41,7 +41,7 @@
                         <Image url="@../Images/allFiles.png" />
                      </image>
                   </ImageView>
-                  <Label alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#browseAllFiles" prefHeight="88.0" prefWidth="192.0" text="Want to encrypt Other Files?" textAlignment="CENTER" underline="true" wrapText="true">
+                  <Label alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#browseAllFiles" prefHeight="88.0" prefWidth="192.0" text="Other Files" textAlignment="CENTER" underline="true" wrapText="true">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
