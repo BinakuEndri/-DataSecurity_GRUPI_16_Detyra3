@@ -13,7 +13,9 @@ Disa nga veçoritë kryesore të aplikacionit janë:
 
 # Punuan:
 •[Endri Binaku](https://github.com/BinakuEndri) 
+
 •[Endrit Gjokaj](https://github.com/endritgjokaj) 
+
 •[Enis Hoxha](https://github.com/ehoxha44) 
 
 # Lënda:
