@@ -81,6 +81,7 @@ public class MainViewController implements Initializable {
             choseFileController.setMainViewController(this);
             Stage stage = new Stage();
             Scene scene = new Scene(root,500,300);
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
 
@@ -141,19 +142,22 @@ public class MainViewController implements Initializable {
     @FXML
     void saveFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("*","."+getFileExtension(theFile));
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("."+getFileExtension(theFile),"." + getFileExtension(theFile));
         fileChooser.getExtensionFilters().add(extensionFilter);
         File filedDest = fileChooser.showSaveDialog(new Stage());
-        try {
-        if(txtFileChosen){
-            CaesarCipher.writeFile(filedDest.getAbsolutePath(),this.resultText.getText());
+        if (filedDest != null){
+            try {
+                if(txtFileChosen){
+                    CaesarCipher.writeFile(filedDest.getAbsolutePath(),this.resultText.getText());
+                }
+                else {
+                    Base64UtilClass.decode(this.resultText.getText(),filedDest.getAbsolutePath());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-        else {
-            Base64UtilClass.decode(this.resultText.getText(),filedDest.getAbsolutePath());
-        }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
 
@@ -193,7 +197,7 @@ public class MainViewController implements Initializable {
                     resultText.setText(decrypted);
                 }
             }else {
-                if(value == "Cesar"){
+                if(value == "Caesar"){
                     String decryptFileCaeasar = CaesarCipher.decrypt(text,Integer.parseInt(key.getText()));
                     resultText.setText(decryptFileCaeasar);
                 } else {
@@ -231,6 +235,7 @@ public class MainViewController implements Initializable {
 
     public void update(){
         this.chooseAction.setOnAction(e ->{
+            resultText.clear();
             this.chooseCipher.setDisable(false);
             this.browseFilesBtn.setDisable(false);
             if (this.chooseAction.getValue()!= null && this.chooseAction.getValue()== "Encrypt"){
@@ -246,7 +251,7 @@ public class MainViewController implements Initializable {
     }
 
     public void validateKeyLengthEncryption(ChoiceBox<String> choseMethod,TextField keyLength){
-                if (choseMethod.getValue() == "Cesar"){
+                if (choseMethod.getValue().equals("Caesar")){
                     keyLength.setOnKeyPressed(e1-> {
                         if(!e1.getCode().isDigitKey() && e1.getCode() != KeyCode.BACK_SPACE){
                             e1.consume();

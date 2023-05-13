@@ -24,7 +24,7 @@
                         <Image url="@../Images/textFile.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="choseTextFile" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#browseTextFile" prefHeight="88.0" prefWidth="192.0" text=" TextFile" textAlignment="CENTER" underline="true" wrapText="true">
+                  <Label fx:id="chooseTextFile" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#browseTextFile" prefHeight="88.0" prefWidth="192.0" text=" TextFile" textAlignment="CENTER" underline="true" wrapText="true">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>

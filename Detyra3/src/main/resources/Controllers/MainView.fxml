@@ -12,7 +12,7 @@
 <AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainViewController">
    <children>
       <ChoiceBox fx:id="chooseCipher" disable="true" layoutX="62.0" layoutY="113.0" prefHeight="26.0" prefWidth="194.0" />
-      <Label layoutX="62.0" layoutY="85.0" prefHeight="18.0" prefWidth="158.0" text="Chose Cipher" />
+      <Label layoutX="62.0" layoutY="85.0" prefHeight="18.0" prefWidth="158.0" text="Choose Cipher" />
       <Label layoutX="390.0" layoutY="85.0" prefHeight="18.0" prefWidth="158.0" text="Type Key " />
       <TextField fx:id="key" editable="false" layoutX="390.0" layoutY="113.0" prefHeight="26.0" prefWidth="201.0" />
       <TextArea fx:id="resultText" editable="false" layoutX="390.0" layoutY="183.0" prefHeight="199.0" prefWidth="201.0" wrapText="true" />
