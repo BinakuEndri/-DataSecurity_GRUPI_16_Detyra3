@@ -7,7 +7,7 @@ Disa nga veçoritë kryesore të aplikacionit janë:
 
 <b>Zgjedhja e çelësit:</b> Shfrytëzuesi ka mundësinë të zgjedhë çelësin për algoritmin e kriptimit. Ky çelës do të përdoret për të transformuar fajllin e hyrjes në versionin e enkriptuar dhe për të kthyer përsëri në versionin origjinal pas dekriptimit.
 
-<b>Zgjedhja e fajllit të hyrjes dhe vendndodhjes së fajllit të enkriptuar:</b> Aplikacioni lejon shfrytëzuesin të specifikojë fajllin që dëshiron të en/dekriptohet dhe vendndodhjen ku do të ruhet fajlli i kriptuar. Kjo jep fleksibilitet dhe kontroll të plotë mbi procesin e kriptimit dhe vendosjen e fajllit të en/dekriptuar.
+<b>Zgjedhja e fajllit të hyrjes dhe vendndodhjes së fajllit të kriptuar:</b> Aplikacioni lejon shfrytëzuesin të specifikojë fajllin që dëshiron të en/dekriptohet dhe vendndodhjen ku do të ruhet fajlli i kriptuar. Kjo jep fleksibilitet dhe kontroll të plotë mbi procesin e kriptimit dhe vendosjen e fajllit të en/dekriptuar.
 
 <b>Zgjedhja e algoritmit të kriptimit:</b> Aplikacioni lejon shfrytëzuesin të zgjedhë cilin algoritëm të përdorë për en/dekriptim. Mundësia për të zgjedhur midis Algoritmit të Cesarit dhe Algoritmit të Vigenère siguron një gamë të gjerë të opsioneve të kriptimit për shfrytëzuesin.
 
